@@ -105,6 +105,13 @@ const followersArray = ['robomantis19', 'mary-clayton', 'Celaira', 'raaudain', '
 axios
   .get(`https://api.github.com/users/ChrisRDaniels/followers`)
   .then(response => {
+    
+    response.data.forEach(item => {
+      axios.get(`https://api.github.com/users/${item.login}`)
+      .then(response => {
+        console.log(response.data)
+      })
+    })
     console.log(response.data);
     response.data.forEach(item => {
       const followers = cardCreator(item);
@@ -113,6 +120,8 @@ axios
   })
   .catch(error => {
     console.log("The data was not returned", error);
+
+    
 
   });
 

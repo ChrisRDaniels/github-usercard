@@ -80,7 +80,7 @@ function cardCreator(data) {
   name.textContent = `${data.name}`;
   username.textContent = `Username: ${data.login}`;
   location.textContent = `Location: ${data.location}`;
-  profile.textContent = `Profile: `;
+  profile.textContent = `Profile:`;
   profileAddress.href = data.html_url;
   profileAddress.textContent = data.html_url;
   followers.textContent = `Followers: ${data.followers}`;
@@ -106,28 +106,15 @@ function cardCreator(data) {
 
 const followersArray = ['robomantis19', 'mary-clayton', 'Celaira', 'raaudain', 'DTJohnson5', 'alecblkly'];
 
-axios
-  .get(`https://api.github.com/users/ChrisRDaniels/followers`)
+followersArray.forEach(item => {
+  axios.get(`https://api.github.com/users/${item}`)
   .then(response => {
-   
-    response.data.forEach(item => {
-
-      axios
-        .get(`https://api.github.com/users/${item.login}`)
-        .then(response => {
-          console.log(response.data)
-        })
-      })
-        console.log(response.data);
-        
-        response.data.forEach(item => {
-          console.log("get follower info")
-          NewCards.appendChild(cardCreator(item))
-        })
-      })
+    console.log(response);
+      NewCards.appendChild(cardCreator(response.data));
+    })
   .catch(error => {
     console.log("The data was not returned", error);
-
+  })
   });
 
 

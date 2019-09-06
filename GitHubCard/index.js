@@ -75,6 +75,18 @@ function cardCreator(data) {
   name.classList.add('name');
   username.classList.add('username');
 
+  //data to fetch //
+  usersIMG.src = `${data.avatar_url}`;
+  name.textContent = `${data.name}`;
+  username.textContent = `Username: ${data.login}`;
+  location.textContent = `Location: ${data.location}`;
+  profile.textContent = `Profile: `;
+  profileAddress.href = data.html_url;
+  profileAddress.textContent = data.html_url;
+  followers.textContent = `Followers: ${data.followers}`;
+  following.textContent = `Following: ${data.following}`;
+  bio.textContent = `Bio: ${data.bio}`;
+
   //.appendChild() //
   card.appendChild(usersIMG);
   card.appendChild(cardInfo);
@@ -87,15 +99,7 @@ function cardCreator(data) {
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
 
-  //data to fetch //
-  usersIMG.src = `${data.avatar_url}`
-  name.textContent = `${data.name}`
-  username.textContent = `${data.login}`
-  location.textContent = `Location: ${data.location}`
-  profile.textContent = `Profile: ${data.html_url}`;
-  followers.textContent = `Followers: ${data.followers}`;
-  following.textContent = `Following: ${data.following}`;
-  bio.textContent = `Bio: ${data.bio}`;
+  
 
   return card;
 };
@@ -105,23 +109,24 @@ const followersArray = ['robomantis19', 'mary-clayton', 'Celaira', 'raaudain', '
 axios
   .get(`https://api.github.com/users/ChrisRDaniels/followers`)
   .then(response => {
-    
+   
     response.data.forEach(item => {
-      axios.get(`https://api.github.com/users/${item.login}`)
-      .then(response => {
-        console.log(response.data)
+
+      axios
+        .get(`https://api.github.com/users/${item.login}`)
+        .then(response => {
+          console.log(response.data)
+        })
       })
-    })
-    console.log(response.data);
-    response.data.forEach(item => {
-      const followers = cardCreator(item);
-      NewCards.appendChild(followers);
-    });
-  })
+        console.log(response.data);
+        
+        response.data.forEach(item => {
+          console.log("get follower info")
+          NewCards.appendChild(cardCreator(item))
+        })
+      })
   .catch(error => {
     console.log("The data was not returned", error);
-
-    
 
   });
 
